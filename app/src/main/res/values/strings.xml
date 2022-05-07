@@ -2,4 +2,8 @@
     <string name="app_name">PJ_projekt</string>
     <string name="text_qr">Scan QR code</string>
     <string name="button_qr">SCAN</string>
+    <string name="text_login">Login</string>
+    <string name="button_login">Login</string>
+    <string name="hint_username">Username</string>
+    <string name="hint_password">Password</string>
 </resources>
