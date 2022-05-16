@@ -4,6 +4,9 @@ import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.pj_projekt.databinding.ActivityPlaySoundBinding
+import okhttp3.FormBody
+import okhttp3.Request
+import okhttp3.RequestBody
 
 class PlaySoundActivity : AppCompatActivity() {
     private lateinit var  binding: ActivityPlaySoundBinding
@@ -17,5 +20,12 @@ class PlaySoundActivity : AppCompatActivity() {
         binding.openButton.setOnClickListener {
             mp.start()
         }
+    }
+
+    fun makeHttpRequest() {
+        val formBody = FormBody.Builder()
+            .add("boxId", "358")
+            .add("tokenFormat", "2")
+            .build()
     }
 }
