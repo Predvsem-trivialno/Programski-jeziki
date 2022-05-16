@@ -52,12 +52,13 @@ class PlaySoundActivity : AppCompatActivity() {
                 .build()
 
             val response = client.newCall(request).execute()
-            val responseBody = response.body
+
             if (!response.isSuccessful) {
                 Log.i("Response code: ", response.code.toString())
             }
             else {
                 Log.i("Response code: ", response.code.toString())
+                response.body?.let { Log.i("Response: ", it.string()) }
             }
         }
     }
