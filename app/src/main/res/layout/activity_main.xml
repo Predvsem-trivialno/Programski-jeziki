@@ -30,4 +30,17 @@
         app:layout_constraintTop_toBottomOf="@+id/txtScanQR"
         app:layout_constraintVertical_bias="0.068" />
 
+    <Button
+        android:id="@+id/playSoundButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/playSoundButtonText"
+        android:onClick="showPlaySoundActivity"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnScanQR"
+        app:layout_constraintVertical_bias="0.092" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
