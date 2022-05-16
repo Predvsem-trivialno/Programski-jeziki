@@ -27,5 +27,11 @@ class PlaySoundActivity : AppCompatActivity() {
             .add("boxId", "358")
             .add("tokenFormat", "2")
             .build()
+        val token = "9ea96945-3a37-4638-a5d4-22e89fbc998f"
+        val request = Request.Builder()
+            .url("https://api-ms-stage.direct4.me/sandbox/v1/Access/openbox")
+            .addHeader("Authorization", "Bearer " + token)
+            .post(formBody)
+            .build()
     }
 }
