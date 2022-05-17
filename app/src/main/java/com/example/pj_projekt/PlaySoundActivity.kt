@@ -1,30 +1,37 @@
 package com.example.pj_projekt
 
 import android.media.MediaPlayer
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Looper
+import android.util.Base64
 import android.util.Log
-import android.view.View
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.pj_projekt.databinding.ActivityPlaySoundBinding
 import com.google.gson.Gson
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
-import java.io.IOException
+import java.io.File
+import java.util.*
+import java.util.Base64.getDecoder
 import kotlin.concurrent.thread
+
 
 class PlaySoundActivity : AppCompatActivity() {
     private lateinit var  binding: ActivityPlaySoundBinding
+    private lateinit var data: JSONObject
+
+    private fun generateFile() {
+        val decodedBytes = Base64.decode(data.getString("data"),Base64.NO_WRAP)
+        File("token").writeBytes(decodedBytes)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPlaySoundBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        var mp = MediaPlayer.create(this, R.raw.testeffect)
+        val mp = MediaPlayer.create(this, R.raw.testeffect)
         binding.openButton.setOnClickListener {
             mp.start()
         }
@@ -36,10 +43,10 @@ class PlaySoundActivity : AppCompatActivity() {
 
     data class parameters(val boxId: String, val tokenFormat: Int)
 
-    fun makeHttpRequest() {
+    private fun makeHttpRequest() {
         thread(start = true) {
             val client = OkHttpClient()
-            val jsonParams = Gson().toJson(parameters("358", 2))
+            val jsonParams = Gson().toJson(parameters("352", 2))
             val mediaType = "application/json; charset=utf-8".toMediaType()
             val formBody = jsonParams.toRequestBody(mediaType)
 
@@ -58,7 +65,7 @@ class PlaySoundActivity : AppCompatActivity() {
             }
             else {
                 Log.i("Response code: ", response.code.toString())
-                response.body?.let { Log.i("Response: ", it.string()) }
+                data = JSONObject(response.body?.string()!!)
             }
         }
     }
