@@ -54,7 +54,7 @@ class PlaySoundActivity : AppCompatActivity() {
 
     private fun playSound() {
         val mp = MediaPlayer.create(this, Uri.parse(fileName))
-        Toast.makeText(applicationContext,"Playing opening sound for box $boxId",Toast.LENGTH_SHORT).show()
+        runOnUiThread{Toast.makeText(applicationContext,"Playing opening sound for box $boxId...",Toast.LENGTH_SHORT).show()}
         mp.start()
     }
 
@@ -86,11 +86,13 @@ class PlaySoundActivity : AppCompatActivity() {
                 .post(formBody)
                 .build()
 
+            runOnUiThread{Toast.makeText(applicationContext,"Sending request to the server...",Toast.LENGTH_SHORT).show()}
+
             val response = client.newCall(request).execute()
 
             if (!response.isSuccessful) {
                 Log.i("Response code: ", response.code.toString())
-                Toast.makeText(applicationContext,"An error occurred during communication.",Toast.LENGTH_SHORT).show()
+                runOnUiThread{Toast.makeText(applicationContext,"An error occurred during communication.",Toast.LENGTH_SHORT).show()}
             }
             else {
                 Log.i("Response code: ", response.code.toString())
@@ -98,7 +100,6 @@ class PlaySoundActivity : AppCompatActivity() {
                 generateZip()
                 extractZip()
                 playSound()
-
             }
         }
     }
