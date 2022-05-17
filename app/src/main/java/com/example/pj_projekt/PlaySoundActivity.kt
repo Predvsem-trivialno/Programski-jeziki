@@ -60,7 +60,7 @@ class PlaySoundActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        boxId = "352"
+        boxId = "530"
         binding = ActivityPlaySoundBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
