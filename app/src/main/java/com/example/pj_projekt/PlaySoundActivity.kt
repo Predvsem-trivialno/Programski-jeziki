@@ -1,9 +1,11 @@
 package com.example.pj_projekt
 
 import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.pj_projekt.databinding.ActivityPlaySoundBinding
 import com.google.gson.Gson
@@ -11,10 +13,8 @@ import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
-import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
-import java.util.*
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 import kotlin.concurrent.thread
@@ -23,6 +23,8 @@ import kotlin.concurrent.thread
 class PlaySoundActivity : AppCompatActivity() {
     private lateinit var  binding: ActivityPlaySoundBinding
     private lateinit var data: JSONObject
+    private lateinit var fileName: String
+    private lateinit var boxId: String
 
     private fun generateZip() {
         val decodedBytes = Base64.decode(data.getString("data"),Base64.NO_WRAP)
@@ -37,6 +39,7 @@ class PlaySoundActivity : AppCompatActivity() {
         val zin = ZipInputStream(fin)
         var ze: ZipEntry?
         while (zin.nextEntry.also { ze = it } != null) {
+            fileName = filesDir.absolutePath+"/"+ze?.name
             val fos = FileOutputStream(filesDir.absolutePath+"/"+ze?.name)
             var c: Int = zin.read()
             while (c != -1) {
@@ -49,17 +52,19 @@ class PlaySoundActivity : AppCompatActivity() {
         zin.close()
     }
 
+    private fun playSound() {
+        val mp = MediaPlayer.create(this, Uri.parse(fileName))
+        Toast.makeText(applicationContext,"Playing opening sound for box $boxId",Toast.LENGTH_SHORT).show()
+        mp.start()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        boxId = "352"
         binding = ActivityPlaySoundBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val mp = MediaPlayer.create(this, R.raw.testeffect)
         binding.openButton.setOnClickListener {
-            mp.start()
-        }
-
-        binding.requestButton.setOnClickListener{
             makeHttpRequest()
         }
     }
@@ -69,7 +74,7 @@ class PlaySoundActivity : AppCompatActivity() {
     private fun makeHttpRequest() {
         thread(start = true) {
             val client = OkHttpClient()
-            val jsonParams = Gson().toJson(parameters("352", 2))
+            val jsonParams = Gson().toJson(parameters(boxId, 2))
             val mediaType = "application/json; charset=utf-8".toMediaType()
             val formBody = jsonParams.toRequestBody(mediaType)
 
@@ -77,7 +82,7 @@ class PlaySoundActivity : AppCompatActivity() {
 
             val request = Request.Builder()
                 .url("https://api-ms-stage.direct4.me/sandbox/v1/Access/openbox")
-                .addHeader("Authorization", "Bearer " + token)
+                .addHeader("Authorization", "Bearer $token")
                 .post(formBody)
                 .build()
 
@@ -85,10 +90,15 @@ class PlaySoundActivity : AppCompatActivity() {
 
             if (!response.isSuccessful) {
                 Log.i("Response code: ", response.code.toString())
+                Toast.makeText(applicationContext,"An error occurred during communication.",Toast.LENGTH_SHORT).show()
             }
             else {
                 Log.i("Response code: ", response.code.toString())
                 data = JSONObject(response.body?.string()!!)
+                generateZip()
+                extractZip()
+                playSound()
+
             }
         }
     }
