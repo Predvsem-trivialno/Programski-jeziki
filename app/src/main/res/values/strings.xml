@@ -1,11 +1,12 @@
 <resources>
-    <string name="app_name">PJ_projekt</string>
-    <string name="text_qr">Scan QR code</string>
-    <string name="button_qr">SCAN</string>
+    <string name="app_name">MySmartPostbox</string>
+    <string name="button_qr">Scan QR code</string>
     <string name="text_login">Login</string>
     <string name="button_login">Login</string>
     <string name="hint_username">Username</string>
     <string name="hint_password">Password</string>
-    <string name="playSoundButtonText">\"Open post box\"</string>
+    <string name="playSoundButtonText">Open post box</string>
     <string name="openButtonText">Open</string>
+    <string name="button_facelogin">Face login</string>
+    <string name="text_welcome">Welcome %s!</string>
 </resources>

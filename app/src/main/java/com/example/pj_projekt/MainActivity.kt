@@ -1,15 +1,16 @@
 package com.example.pj_projekt
 
-import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.view.HapticFeedbackConstants
-import android.view.View
+import android.util.Log
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import com.example.pj_projekt.databinding.ActivityMainBinding
 import com.google.gson.Gson
-import com.google.zxing.integration.android.IntentIntegrator
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONObject
+import kotlin.concurrent.thread
 
 class MainActivity : BaseActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -18,35 +19,52 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.btnScanQR.setOnClickListener{
-            IntentIntegrator(this).initiateScan()
-        }
-    }
 
-    @Deprecated("Deprecated in Java")
-    @RequiresApi(Build.VERSION_CODES.R)
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        val result = IntentIntegrator.parseActivityResult(requestCode,resultCode,data)
-        if(result!=null){
-            if(result.contents==null){
-                Toast.makeText(applicationContext,"Cancelled", Toast.LENGTH_LONG).show()
-            } else {
-                try{
-                    val json = result.contents
-                    val gson = Gson()
-                    val id = gson.fromJson(json, String::class.java)
-                    Toast.makeText(applicationContext,"Scanned postbox with id: $id", Toast.LENGTH_SHORT).show()
-                } catch (e: Exception){
-                    binding.root.performHapticFeedback(HapticFeedbackConstants.REJECT)
-                    Toast.makeText(applicationContext,"Invalid QR code", Toast.LENGTH_SHORT).show()
-                }
+        binding.btnLogin.setOnClickListener{
+            if(binding.inputUsername.text.toString()!="" && binding.inputPassword.text.toString()!=""){
+                makeLoginRequest()
             }
         }
+
+        binding.btnFaceLogin.setOnClickListener{
+
+        }
     }
 
-    fun showPlaySoundActivity(view: View) {
-        val intent = Intent(this, PlaySoundActivity::class.java)
-        startActivity(intent)
+    data class LoginInfo(val username: String, val password: String)
+
+    private fun makeLoginRequest() {
+        thread(start = true) {
+            val client = OkHttpClient()
+            val jsonParams = Gson().toJson(LoginInfo(binding.inputUsername.text.toString(),binding.inputPassword.text.toString()))
+            val mediaType = "application/json; charset=utf-8".toMediaType()
+            val formBody = jsonParams.toRequestBody(mediaType)
+
+            val request = Request.Builder()
+                .url("https://pametni-paketnik.herokuapp.com/user/mobileLogin")
+                .post(formBody)
+                .build()
+
+            val response = client.newCall(request).execute()
+
+            if (!response.isSuccessful) {
+                val errorCode = response.code.toString()
+                Log.i("Response code: ", errorCode)
+                val errorMessage: String = if(errorCode=="404"){
+                    "Incorrect username or password."
+                } else {
+                    "An error occurred during communication."
+                }
+                runOnUiThread{
+                    Toast.makeText(applicationContext,errorMessage,
+                        Toast.LENGTH_SHORT).show()}
+            } else {
+                Log.i("Response code: ", response.code.toString())
+                val data = JSONObject(response.body?.string()!!)
+                app.username = data.getString("username")
+                app.email = data.getString("email")
+                showOpen()
+            }
+        }
     }
 }
