@@ -29,6 +29,10 @@ class MainActivity : BaseActivity() {
         binding.btnFaceLogin.setOnClickListener{
 
         }
+
+        binding.registerRedirectButton.setOnClickListener{
+            showRegister()
+        }
     }
 
     data class LoginInfo(val username: String, val password: String)

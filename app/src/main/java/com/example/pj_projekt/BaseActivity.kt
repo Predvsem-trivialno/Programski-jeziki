@@ -20,4 +20,9 @@ open class BaseActivity : AppCompatActivity() {
         val intent = Intent(this, PlaySoundActivity::class.java)
         startActivity(intent)
     }
+
+    fun showRegister() {
+        val intent = Intent(this, RegisterActivity::class.java)
+        startActivity(intent)
+    }
 }

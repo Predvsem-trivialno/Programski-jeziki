@@ -9,4 +9,10 @@
     <string name="openButtonText">Open</string>
     <string name="button_facelogin">Face login</string>
     <string name="text_welcome">Welcome %s!</string>
+    <string name="registerButtonText">Register</string>
+    <string name="usernameTVText">Username</string>
+    <string name="emailTVText">Email</string>
+    <string name="passwordTVText">Password</string>
+    <string name="confirmPasswordTVText">Confirm Password</string>
+    <string name="registerRedirectButtonText">Register</string>
 </resources>
