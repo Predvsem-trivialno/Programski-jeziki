@@ -5,4 +5,5 @@ import android.app.Application
 class MyApplication: Application() {
     lateinit var username: String
     lateinit var email: String
+    lateinit var userId: String
 }

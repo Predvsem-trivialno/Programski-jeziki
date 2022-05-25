@@ -67,6 +67,7 @@ class MainActivity : BaseActivity() {
                 val data = JSONObject(response.body?.string()!!)
                 app.username = data.getString("username")
                 app.email = data.getString("email")
+                app.userId = data.getString("_id")
                 showOpen()
             }
         }

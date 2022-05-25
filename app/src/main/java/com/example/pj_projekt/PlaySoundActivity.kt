@@ -65,7 +65,32 @@ class PlaySoundActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.openButton.setOnClickListener {
-            makeHttpRequest()
+            //makeHttpRequest()
+            makeOpenRequest()
+        }
+    }
+
+    data class openRequest(val postboxId: String, val userId: String, val success: Boolean)
+
+    private fun makeOpenRequest() {
+        Log.i("User ID:", app.userId)
+        thread(start = true) {
+            val client = OkHttpClient()
+            val jsonParams = Gson().toJson(openRequest(boxId, app.userId, true))
+            val mediaType = "application/json; charset=utf-8".toMediaType()
+            val formBody = jsonParams.toRequestBody(mediaType)
+
+            val request = Request.Builder()
+                .url("https://pametni-paketnik.herokuapp.com/postbox/mobileOpen")
+                .post(formBody)
+                .build()
+
+            val response = client.newCall(request).execute()
+
+            if (!response.isSuccessful) {
+                Log.i("Response code: ", response.code.toString())
+            }
+                makeHttpRequest()
         }
     }
 
