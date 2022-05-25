@@ -25,4 +25,9 @@ open class BaseActivity : AppCompatActivity() {
         val intent = Intent(this, RegisterActivity::class.java)
         startActivity(intent)
     }
+
+    fun showLogin() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+    }
 }
