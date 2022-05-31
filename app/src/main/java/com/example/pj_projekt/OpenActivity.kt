@@ -29,6 +29,15 @@ class OpenActivity : BaseActivity() {
         binding.btnPlaySound.setOnClickListener{
             showPlaySound()
         }
+        binding.btnLogout.setOnClickListener{
+            app.sharedPrefSet("username","")
+            app.sharedPrefSet("email","")
+            app.sharedPrefSet("userId","")
+            app.username = ""
+            app.email = ""
+            app.userId = ""
+            showLogin()
+        }
     }
 
     @Deprecated("Deprecated in Java")

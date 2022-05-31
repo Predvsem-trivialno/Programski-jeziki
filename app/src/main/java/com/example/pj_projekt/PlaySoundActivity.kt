@@ -60,7 +60,6 @@ class PlaySoundActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        boxId = "530"
         binding = ActivityPlaySoundBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -75,7 +74,7 @@ class PlaySoundActivity : AppCompatActivity() {
     private fun makeOpenRequest() {
         thread(start = true) {
             val client = OkHttpClient()
-            val jsonParams = Gson().toJson(openRequest(boxId, app.userId, true))
+            val jsonParams = Gson().toJson(openRequest(app.boxId, app.userId, true))
             val mediaType = "application/json; charset=utf-8".toMediaType()
             val formBody = jsonParams.toRequestBody(mediaType)
 
@@ -103,7 +102,7 @@ class PlaySoundActivity : AppCompatActivity() {
     private fun makeHttpRequest() {
         thread(start = true) {
             val client = OkHttpClient()
-            val jsonParams = Gson().toJson(parameters(boxId, 2))
+            val jsonParams = Gson().toJson(parameters(app.boxId, 2))
             val mediaType = "application/json; charset=utf-8".toMediaType()
             val formBody = jsonParams.toRequestBody(mediaType)
 

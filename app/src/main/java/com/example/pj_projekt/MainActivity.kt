@@ -17,6 +17,10 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if(app.userId!="" && app.username!="" && app.email!=""){
+            Toast.makeText(applicationContext,"Logged in as ${app.username}.",Toast.LENGTH_SHORT).show()
+            showOpen()
+        }
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -68,6 +72,9 @@ class MainActivity : BaseActivity() {
                 app.username = data.getString("username")
                 app.email = data.getString("email")
                 app.userId = data.getString("_id")
+                app.sharedPrefSet("username",app.username)
+                app.sharedPrefSet("email",app.email)
+                app.sharedPrefSet("userId",app.userId)
                 showOpen()
             }
         }
