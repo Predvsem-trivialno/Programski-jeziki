@@ -31,7 +31,7 @@ class MainActivity : BaseActivity() {
         }
 
         binding.btnFaceLogin.setOnClickListener{
-
+            Toast.makeText(applicationContext,"Not yet implemented.", Toast.LENGTH_SHORT).show()
         }
 
         binding.registerRedirectButton.setOnClickListener{
@@ -69,6 +69,8 @@ class MainActivity : BaseActivity() {
             } else {
                 Log.i("Response code: ", response.code.toString())
                 val data = JSONObject(response.body?.string()!!)
+                Log.i("Data:",data.toString())
+                Log.i("Data:",data.getString("_id"))
                 app.username = data.getString("username")
                 app.email = data.getString("email")
                 app.userId = data.getString("_id")

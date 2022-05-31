@@ -27,7 +27,7 @@
         app:layout_constraintTop_toBottomOf="@+id/txtSelected" />
 
     <Button
-        android:id="@+id/btnPlaySound"
+        android:id="@+id/btnOpen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="showPlaySoundActivity"
@@ -54,7 +54,7 @@
         android:text="@string/button_viewlogs"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnPlaySound" />
+        app:layout_constraintTop_toBottomOf="@+id/btnOpen" />
 
     <Button
         android:id="@+id/btnLogout"

@@ -29,11 +29,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PlaySoundActivity"
+            android:name=".OpenActivity"
             android:exported="false" />
         <activity
-            android:name=".OpenActivity"
-            android:exported="false"></activity>
+            android:name=".LogsActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

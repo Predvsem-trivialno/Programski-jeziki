@@ -16,13 +16,13 @@ open class BaseActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    fun showPlaySound() {
-        val intent = Intent(this, PlaySoundActivity::class.java)
+    fun showRegister() {
+        val intent = Intent(this, RegisterActivity::class.java)
         startActivity(intent)
     }
 
-    fun showRegister() {
-        val intent = Intent(this, RegisterActivity::class.java)
+    fun showLogs() {
+        val intent = Intent(this, LogsActivity::class.java)
         startActivity(intent)
     }
 

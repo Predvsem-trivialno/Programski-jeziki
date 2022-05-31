@@ -14,8 +14,8 @@ class MyApplication: Application() {
     override fun onCreate(){
         super.onCreate()
         username = sharedPrefGet("username","")!!
-        email = sharedPrefGet("username","")!!
-        userId = sharedPrefGet("username","")!!
+        email = sharedPrefGet("email","")!!
+        userId = sharedPrefGet("userId","")!!
     }
 
     fun sharedPrefSet(pref: String, value: String) {
