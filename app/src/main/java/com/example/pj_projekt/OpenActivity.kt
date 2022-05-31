@@ -18,6 +18,10 @@ class OpenActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityOpenBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        if(app.boxId.isEmpty()){
+            binding.btnPlaySound.isEnabled=false
+            binding.btnLogs.isEnabled=false
+        }
         binding.txtWelcome.text = getString(R.string.text_welcome,app.username)
         binding.btnScanQR.setOnClickListener{
             IntentIntegrator(this).initiateScan()
@@ -40,10 +44,15 @@ class OpenActivity : BaseActivity() {
                     val json = result.contents
                     val gson = Gson()
                     val id = gson.fromJson(json, String::class.java)
-                    Toast.makeText(applicationContext,"Scanned postbox with id: $id", Toast.LENGTH_SHORT).show()
+                    app.boxId = id
+                    Toast.makeText(applicationContext,"Scanned box with id: $id", Toast.LENGTH_SHORT).show()
+                    binding.txtSelected.text = getString(R.string.text_selected_2,app.boxId)
+                    binding.btnPlaySound.isEnabled=true
+                    binding.btnLogs.isEnabled=true
                 } catch (e: Exception){
                     binding.root.performHapticFeedback(HapticFeedbackConstants.REJECT)
                     Toast.makeText(applicationContext,"Invalid QR code", Toast.LENGTH_SHORT).show()
+                    binding.txtSelected.text = getString(R.string.text_selected)
                 }
             }
         }

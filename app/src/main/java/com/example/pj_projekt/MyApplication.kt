@@ -3,7 +3,8 @@ package com.example.pj_projekt
 import android.app.Application
 
 class MyApplication: Application() {
-    lateinit var username: String
-    lateinit var email: String
-    lateinit var userId: String
+    var username: String = ""
+    var email: String = ""
+    var userId: String = ""
+    var boxId: String = ""
 }
