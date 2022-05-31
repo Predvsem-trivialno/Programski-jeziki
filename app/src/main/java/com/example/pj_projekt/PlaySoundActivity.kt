@@ -70,10 +70,9 @@ class PlaySoundActivity : AppCompatActivity() {
         }
     }
 
-    data class openRequest(val postboxId: String, val userId: String, val success: Boolean)
+    data class openRequest(val postboxId: String, val openedBy: String, val success: Boolean)
 
     private fun makeOpenRequest() {
-        Log.i("User ID:", app.userId)
         thread(start = true) {
             val client = OkHttpClient()
             val jsonParams = Gson().toJson(openRequest(boxId, app.userId, true))
@@ -88,9 +87,14 @@ class PlaySoundActivity : AppCompatActivity() {
             val response = client.newCall(request).execute()
 
             if (!response.isSuccessful) {
-                Log.i("Response code: ", response.code.toString())
-            }
+                when (response.code) {
+                    403 -> runOnUiThread{Toast.makeText(applicationContext,"You don't have access to this postbox!",Toast.LENGTH_SHORT).show()}
+                    404 -> runOnUiThread{Toast.makeText(applicationContext,"This postbox is not registered!",Toast.LENGTH_SHORT).show()}
+                    500 -> runOnUiThread{Toast.makeText(applicationContext,"An error occurred while communicating with the server.",Toast.LENGTH_SHORT).show()}
+                }
+            } else {
                 makeHttpRequest()
+            }
         }
     }
 
