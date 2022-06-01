@@ -30,4 +30,9 @@ open class BaseActivity : AppCompatActivity() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
     }
+
+    fun showImageUpload() {
+        val intent = Intent(this, UploadImagesActivity::class.java)
+        startActivity(intent)
+    }
 }

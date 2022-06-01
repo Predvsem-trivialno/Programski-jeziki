@@ -57,6 +57,9 @@ class OpenActivity : BaseActivity() {
             app.userId = ""
             showLogin()
         }
+        binding.uploadImagesActivityButton.setOnClickListener {
+            showImageUpload()
+        }
     }
 
     @Deprecated("Deprecated in Java")
