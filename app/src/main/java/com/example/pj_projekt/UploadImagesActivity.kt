@@ -40,21 +40,21 @@ class UploadImagesActivity : BaseActivity() {
     fun sendImages() {
         thread(start = true) {
             val client = OkHttpClient()
-            val MEDIA_TYPE_JPG: MediaType? = "image/*".toMediaTypeOrNull()
+            val MEDIA_TYPE_JPG: MediaType? = "image/*jpg".toMediaTypeOrNull()
 
             val requestBody = MEDIA_TYPE_JPG?.let {
                 MultipartBody.Builder()
                     .setType(it)
-                    .addFormDataPart("image1", app.username + "1", imageFileList[0].asRequestBody(MEDIA_TYPE_JPG))
-                    .addFormDataPart("image2", app.username + "2", imageFileList[1].asRequestBody(MEDIA_TYPE_JPG))
-                    .addFormDataPart("image3", app.username + "3", imageFileList[2].asRequestBody(MEDIA_TYPE_JPG))
-                    .addFormDataPart("image4", app.username + "4", imageFileList[3].asRequestBody(MEDIA_TYPE_JPG))
-                    .addFormDataPart("image5", app.username + "5", imageFileList[4].asRequestBody(MEDIA_TYPE_JPG))
-                    .addFormDataPart("image6", app.username + "6", imageFileList[5].asRequestBody(MEDIA_TYPE_JPG))
-                    .addFormDataPart("image7", app.username + "7", imageFileList[6].asRequestBody(MEDIA_TYPE_JPG))
-                    .addFormDataPart("image8", app.username + "8", imageFileList[7].asRequestBody(MEDIA_TYPE_JPG))
-                    .addFormDataPart("image9", app.username + "9", imageFileList[8].asRequestBody(MEDIA_TYPE_JPG))
-                    .addFormDataPart("image10", app.username + "10", imageFileList[9].asRequestBody(MEDIA_TYPE_JPG))
+                    .addFormDataPart("image1", app.username + "1.jpg", imageFileList[0].asRequestBody(MEDIA_TYPE_JPG))
+                    .addFormDataPart("image2", app.username + "2.jpg", imageFileList[1].asRequestBody(MEDIA_TYPE_JPG))
+                    .addFormDataPart("image3", app.username + "3.jpg", imageFileList[2].asRequestBody(MEDIA_TYPE_JPG))
+                    .addFormDataPart("image4", app.username + "4.jpg", imageFileList[3].asRequestBody(MEDIA_TYPE_JPG))
+                    .addFormDataPart("image5", app.username + "5.jpg", imageFileList[4].asRequestBody(MEDIA_TYPE_JPG))
+                    .addFormDataPart("image6", app.username + "6.jpg", imageFileList[5].asRequestBody(MEDIA_TYPE_JPG))
+                    .addFormDataPart("image7", app.username + "7.jpg", imageFileList[6].asRequestBody(MEDIA_TYPE_JPG))
+                    .addFormDataPart("image8", app.username + "8.jpg", imageFileList[7].asRequestBody(MEDIA_TYPE_JPG))
+                    .addFormDataPart("image9", app.username + "9.jpg", imageFileList[8].asRequestBody(MEDIA_TYPE_JPG))
+                    .addFormDataPart("image10", app.username + "10.jpg", imageFileList[9].asRequestBody(MEDIA_TYPE_JPG))
                     .build()
             }
         }
