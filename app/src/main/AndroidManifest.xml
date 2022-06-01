@@ -17,6 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PJ_projekt">
         <activity
+            android:name=".UploadImagesActivity"
+            android:exported="false" />
+        <activity
             android:name=".RegisterActivity"
             android:exported="false" />
         <activity
