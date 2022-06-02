@@ -36,7 +36,7 @@ class OpenActivity : BaseActivity() {
         setContentView(binding.root)
         if(app.boxId.isEmpty()){
             binding.btnOpen.isEnabled=false
-            binding.btnLogs.isEnabled=false
+            //binding.btnLogs.isEnabled=false
         }
         binding.txtWelcome.text = getString(R.string.text_welcome,app.username)
         binding.btnScanQR.setOnClickListener{
