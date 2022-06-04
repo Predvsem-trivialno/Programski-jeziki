@@ -1,3 +1,11 @@
 package com.example.pj_projekt
 
-data class logStructure(val username: String, val date: String, val success: Boolean)
+import com.google.gson.annotations.SerializedName
+
+data class logStructure(
+    @SerializedName("username")
+    var username: String,
+    @SerializedName("dateOpened")
+    val dateOpened: String,
+    @SerializedName("success")
+    val success: Boolean)

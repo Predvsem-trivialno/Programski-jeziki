@@ -23,11 +23,14 @@ class LogsActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLogsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        app.boxId = "352"
-        logListRequest()
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        logListRequest()
+        Thread.sleep(1_000)
         val adapter = logAdapter(data)
         binding.recyclerView.adapter = adapter
+        for(i in 0 until data.size) {
+            Log.i("CREATED: ", data[i].toString())
+        }
     }
 
     data class sendID(val boxId: String)
@@ -52,7 +55,18 @@ class LogsActivity : BaseActivity() {
                 jsonData = JSONArray(response.body?.string()!!)
                 //data = Gson().fromJson(jsonData.toString(),)
                 Log.i("Json: ", jsonData.toString())
+                for(i in 0 until jsonData.length()) {
+                    val temp = jsonData.getJSONObject(i)
+                    val user = temp.getJSONObject("openedBy").getString("username")
+                    Log.i("INPUT: ", user)
+                    data.add(Gson().fromJson(jsonData.getJSONObject(i).toString(), logStructure::class.java))
+                    data[i].username = user
+                }
+            }
+            for(i in 0 until data.size) {
+                Log.i("INPUT INSIDE: ", data[i].toString())
             }
         }
+
     }
 }

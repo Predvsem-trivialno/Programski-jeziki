@@ -26,7 +26,7 @@ class logAdapter(private val data: ArrayList<logStructure>): RecyclerView.Adapte
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val model = data[position]
         holder.usernameTV.text = model.username
-        holder.dateTV.text = model.date
+        holder.dateTV.text = model.dateOpened
         holder.successTV.text = model.success.toString()
     }
 }
