@@ -2,6 +2,7 @@ package com.example.pj_projekt
 
 import android.os.Bundle
 import android.util.Log
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pj_projekt.databinding.ActivityLogsBinding
 import com.google.gson.Gson
@@ -24,6 +25,12 @@ class LogsActivity : BaseActivity() {
         binding = ActivityLogsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.addItemDecoration(
+            DividerItemDecoration(
+                baseContext,
+                (binding.recyclerView.layoutManager as LinearLayoutManager).orientation
+            )
+        )
         logListRequest()
         Thread.sleep(1_000)
         val adapter = logAdapter(data)
