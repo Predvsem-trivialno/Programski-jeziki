@@ -131,6 +131,10 @@ class OpenActivity : BaseActivity() {
     }
 
     private fun makeOpenRequest() {
+        binding.btnOpen.isEnabled = false
+        binding.btnLogs.isEnabled = false
+        binding.btnLogout.isEnabled = false
+        binding.btnScanQR.isEnabled = false
         thread(start = true) {
             val client = OkHttpClient()
             val jsonParams = Gson().toJson(OpenRequest(app.boxId, app.userId, true))
@@ -199,6 +203,10 @@ class OpenActivity : BaseActivity() {
                         dialog.cancel()
                     }
                     builder.show()
+                    binding.btnOpen.isEnabled = true
+                    binding.btnLogs.isEnabled = true
+                    binding.btnLogout.isEnabled = true
+                    binding.btnScanQR.isEnabled = true
                 }
             }
         }
