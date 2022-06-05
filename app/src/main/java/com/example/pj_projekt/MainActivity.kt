@@ -1,15 +1,22 @@
 package com.example.pj_projekt
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Base64
 import android.util.Log
 import android.widget.Toast
 import com.example.pj_projekt.databinding.ActivityMainBinding
 import com.google.gson.Gson
+import okhttp3.FormBody
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
+import java.io.ByteArrayOutputStream
 import kotlin.concurrent.thread
 
 class MainActivity : BaseActivity() {
@@ -31,7 +38,7 @@ class MainActivity : BaseActivity() {
         }
 
         binding.btnFaceLogin.setOnClickListener{
-            Toast.makeText(applicationContext,"Not yet implemented.", Toast.LENGTH_SHORT).show()
+            dispatchTakePictureIntent()
         }
 
         binding.registerRedirectButton.setOnClickListener{
@@ -79,6 +86,61 @@ class MainActivity : BaseActivity() {
                 app.sharedPrefSet("userId",app.userId)
                 showOpen()
             }
+        }
+    }
+
+    private fun dispatchTakePictureIntent() {
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        try {
+            startActivityForResult(takePictureIntent, 1)
+        } catch (e: ActivityNotFoundException) {
+            Toast.makeText(applicationContext,"An error occurred.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun makeFaceLoginRequest(file: String) {
+        Log.i("Encoded",file)
+        thread(start = true) {
+            val client = OkHttpClient()
+            val formBody = FormBody.Builder()
+                .add("faceImage", file)
+                .build()
+
+            val request = Request.Builder()
+                .url("https://pametni-paketnik.herokuapp.com/user/mobileLoginFace")
+                .post(formBody)
+                .build()
+
+            val response = client.newCall(request).execute()
+
+            if (!response.isSuccessful) {
+                runOnUiThread{
+                    Toast.makeText(applicationContext,response.message,
+                        Toast.LENGTH_SHORT).show()}
+            } else {
+                Log.i("Response code: ", response.code.toString())
+                val data = JSONObject(response.body?.string()!!)
+                Log.i("Data:",data.toString())
+                Log.i("Data:",data.getString("_id"))
+                app.username = data.getString("username")
+                app.email = data.getString("email")
+                app.userId = data.getString("_id")
+                app.sharedPrefSet("username",app.username)
+                app.sharedPrefSet("email",app.email)
+                app.sharedPrefSet("userId",app.userId)
+                showOpen()
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            val imageBitmap = data?.extras?.get("data") as Bitmap
+            binding.imageView.setImageBitmap(imageBitmap)
+            val outputStream = ByteArrayOutputStream()
+            imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+            makeFaceLoginRequest(Base64.encodeToString(outputStream.toByteArray(), Base64.NO_WRAP))
         }
     }
 }

@@ -7,11 +7,13 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.widget.Toast
 import com.example.pj_projekt.databinding.ActivityUploadImagesBinding
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
+import okhttp3.Request
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 import kotlin.concurrent.thread
@@ -40,7 +42,7 @@ class UploadImagesActivity : BaseActivity() {
     fun sendImages() {
         thread(start = true) {
             val client = OkHttpClient()
-            val MEDIA_TYPE_JPG: MediaType? = "image/*jpg".toMediaTypeOrNull()
+            val MEDIA_TYPE_JPG: MediaType? = "image/*".toMediaTypeOrNull()
 
             val requestBody = MEDIA_TYPE_JPG?.let {
                 MultipartBody.Builder()
@@ -56,6 +58,19 @@ class UploadImagesActivity : BaseActivity() {
                     .addFormDataPart("image9", app.username + "9.jpg", imageFileList[8].asRequestBody(MEDIA_TYPE_JPG))
                     .addFormDataPart("image10", app.username + "10.jpg", imageFileList[9].asRequestBody(MEDIA_TYPE_JPG))
                     .build()
+            }
+
+            val request = Request.Builder()
+                .url("https://pametni-paketnik.herokuapp.com/user/mobileRegisterFace")
+                .post(requestBody!!)
+                .build()
+
+            val response = client.newCall(request).execute()
+
+            if (!response.isSuccessful) {
+                Log.i("Response",response.message)
+            } else {
+                Log.i("Result","Successful API upload!")
             }
         }
     }
