@@ -1,10 +1,14 @@
 package com.example.pj_projekt
 
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
+import java.time.Instant
+import java.time.ZoneId
 
 class logAdapter(private val data: ArrayList<logStructure>): RecyclerView.Adapter<logAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -23,10 +27,12 @@ class logAdapter(private val data: ArrayList<logStructure>): RecyclerView.Adapte
         return data.size
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val model = data[position]
+        var date = model.dateOpened.substring(0, 10) + " " + model.dateOpened.substring(11, 16)
         holder.usernameTV.text = model.username
-        holder.dateTV.text = model.dateOpened
+        holder.dateTV.text = date
         holder.successTV.text = model.success.toString()
     }
 }
