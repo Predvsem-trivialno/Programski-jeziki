@@ -76,8 +76,6 @@ class MainActivity : BaseActivity() {
             } else {
                 Log.i("Response code: ", response.code.toString())
                 val data = JSONObject(response.body?.string()!!)
-                Log.i("Data:",data.toString())
-                Log.i("Data:",data.getString("_id"))
                 app.username = data.getString("username")
                 app.email = data.getString("email")
                 app.userId = data.getString("_id")
@@ -114,14 +112,17 @@ class MainActivity : BaseActivity() {
             val response = client.newCall(request).execute()
 
             if (!response.isSuccessful) {
+                val errorMessage: String = if(response.code.toString()=="404"){
+                    "User not found."
+                } else {
+                    response.message
+                }
                 runOnUiThread{
-                    Toast.makeText(applicationContext,response.message,
+                    Toast.makeText(applicationContext,errorMessage,
                         Toast.LENGTH_SHORT).show()}
             } else {
                 Log.i("Response code: ", response.code.toString())
                 val data = JSONObject(response.body?.string()!!)
-                Log.i("Data:",data.toString())
-                Log.i("Data:",data.getString("_id"))
                 app.username = data.getString("username")
                 app.email = data.getString("email")
                 app.userId = data.getString("_id")

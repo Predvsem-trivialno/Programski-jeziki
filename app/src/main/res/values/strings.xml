@@ -17,6 +17,6 @@
     <string name="registerRedirectButtonText">Register</string>
     <string name="text_selected">You currently have no box selected!</string>
     <string name="text_selected_2">Selected box: %s</string>
-    <string name="button_viewlogs">View open history</string>
+    <string name="button_viewlogs">Open history</string>
     <string name="button_logout">Log out</string>
 </resources>
