@@ -55,6 +55,7 @@ class OpenActivity : BaseActivity() {
             app.username = ""
             app.email = ""
             app.userId = ""
+            app.boxId = ""
             showLogin()
         }
         binding.uploadImagesActivityButton.setOnClickListener {
