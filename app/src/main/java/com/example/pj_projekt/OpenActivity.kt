@@ -30,6 +30,13 @@ import kotlin.concurrent.thread
 class OpenActivity : BaseActivity() {
     private lateinit var binding: ActivityOpenBinding
 
+    private fun enableButtons(state: Boolean){
+        binding.btnOpen.isEnabled = state
+        binding.btnLogs.isEnabled = state
+        binding.btnLogout.isEnabled = state
+        binding.btnScanQR.isEnabled = state
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityOpenBinding.inflate(layoutInflater)
@@ -128,10 +135,7 @@ class OpenActivity : BaseActivity() {
     }
 
     private fun makeOpenRequest() {
-        binding.btnOpen.isEnabled = false
-        binding.btnLogs.isEnabled = false
-        binding.btnLogout.isEnabled = false
-        binding.btnScanQR.isEnabled = false
+        enableButtons(false)
         thread(start = true) {
             val client = OkHttpClient()
             val jsonParams = Gson().toJson(OpenRequest(app.boxId, app.userId, true))
@@ -151,6 +155,7 @@ class OpenActivity : BaseActivity() {
                     404 -> runOnUiThread{Toast.makeText(applicationContext,"This postbox is not registered!",Toast.LENGTH_SHORT).show()}
                     500 -> runOnUiThread{Toast.makeText(applicationContext,response.message,Toast.LENGTH_SHORT).show()}
                 }
+                runOnUiThread{ enableButtons(true) }
             } else {
                 makeSoundRequest()
             }
@@ -179,6 +184,7 @@ class OpenActivity : BaseActivity() {
             if (!response.isSuccessful) {
                 Log.i("Response code: ", response.code.toString())
                 runOnUiThread{Toast.makeText(applicationContext,"An error occurred during communication.",Toast.LENGTH_SHORT).show()}
+                runOnUiThread{ enableButtons(true) }
             }
             else {
                 Log.i("Response code: ", response.code.toString())
@@ -200,10 +206,7 @@ class OpenActivity : BaseActivity() {
                         dialog.cancel()
                     }
                     builder.show()
-                    binding.btnOpen.isEnabled = true
-                    binding.btnLogs.isEnabled = true
-                    binding.btnLogout.isEnabled = true
-                    binding.btnScanQR.isEnabled = true
+                    runOnUiThread{ enableButtons(true) }
                 }
             }
         }

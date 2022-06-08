@@ -22,6 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="@string/button_qr"
+        app:icon="@drawable/code"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtSelected" />
@@ -32,6 +33,7 @@
         android:layout_height="wrap_content"
         android:onClick="showPlaySoundActivity"
         android:text="@string/playSoundButtonText"
+        app:icon="@drawable/open"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnScanQR" />
@@ -52,6 +54,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/button_viewlogs"
+        app:icon="@drawable/log"
+        app:iconSize="52px"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnOpen" />
@@ -62,6 +66,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:text="@string/button_logout"
+        app:icon="@drawable/signout"
+        app:iconSize="52px"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
