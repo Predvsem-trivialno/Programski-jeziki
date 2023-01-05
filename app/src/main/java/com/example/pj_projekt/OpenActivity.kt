@@ -143,7 +143,7 @@ class OpenActivity : BaseActivity() {
             val formBody = jsonParams.toRequestBody(mediaType)
 
             val request = Request.Builder()
-                .url("https://pametni-paketnik.herokuapp.com/postbox/mobileOpen")
+                .url("https://pametni-paketnik.onrender.com/postbox/mobileOpen")
                 .post(formBody)
                 .build()
 
@@ -220,7 +220,7 @@ class OpenActivity : BaseActivity() {
             val formBody = jsonParams.toRequestBody(mediaType)
 
             val request = Request.Builder()
-                .url("https://pametni-paketnik.herokuapp.com/accesslog")
+                .url("https://pametni-paketnik.onrender.com/accesslog")
                 .post(formBody)
                 .build()
 

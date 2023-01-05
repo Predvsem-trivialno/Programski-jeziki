@@ -56,7 +56,7 @@ class MainActivity : BaseActivity() {
             val formBody = jsonParams.toRequestBody(mediaType)
 
             val request = Request.Builder()
-                .url("https://pametni-paketnik.herokuapp.com/user/mobileLogin")
+                .url("https://pametni-paketnik.onrender.com/user/mobileLogin")
                 .post(formBody)
                 .build()
 
@@ -105,7 +105,7 @@ class MainActivity : BaseActivity() {
                 .build()
 
             val request = Request.Builder()
-                .url("https://pametni-paketnik.herokuapp.com/user/mobileLoginFace")
+                .url("https://pametni-paketnik.onrender.com/user/mobileLoginFace")
                 .post(formBody)
                 .build()
 

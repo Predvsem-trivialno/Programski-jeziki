@@ -50,7 +50,7 @@ class LogsActivity : BaseActivity() {
             val formBody = jsonParams.toRequestBody(mediaType)
 
             val request = Request.Builder()
-                .url("https://pametni-paketnik.herokuapp.com/accesslog/mobile")
+                .url("https://pametni-paketnik.onrender.com/accesslog/mobile")
                 .post(formBody)
                 .build()
 

@@ -61,7 +61,7 @@ class UploadImagesActivity : BaseActivity() {
             }
 
             val request = Request.Builder()
-                .url("https://pametni-paketnik.herokuapp.com/user/mobileRegisterFace")
+                .url("https://pametni-paketnik.onrender.com/user/mobileRegisterFace")
                 .post(requestBody!!)
                 .build()
 

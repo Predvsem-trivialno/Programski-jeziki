@@ -34,7 +34,7 @@ class RegisterActivity : BaseActivity() {
             val formBody = jsonParams.toRequestBody(mediaType)
 
             val request = Request.Builder()
-                .url("https://pametni-paketnik.herokuapp.com/user/")
+                .url("https://pametni-paketnik.onrender.com/user/")
                 .post(formBody)
                 .build()
 
