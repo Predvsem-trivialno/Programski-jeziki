@@ -19,4 +19,5 @@
     <string name="text_selected_2">Selected box: %s</string>
     <string name="button_viewlogs">Open history</string>
     <string name="button_logout">Log out</string>
+    <string name="button_tsp">TSP</string>
 </resources>

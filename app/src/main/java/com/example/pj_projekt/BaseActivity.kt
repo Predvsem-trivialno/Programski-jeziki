@@ -31,6 +31,11 @@ open class BaseActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    fun showTSP() {
+        val intent = Intent(this, TSPActivity::class.java)
+        startActivity(intent)
+    }
+
     fun showImageUpload() {
         val intent = Intent(this, UploadImagesActivity::class.java)
         startActivity(intent)
