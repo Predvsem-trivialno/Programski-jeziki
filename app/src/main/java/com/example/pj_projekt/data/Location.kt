@@ -1,6 +1,6 @@
 package com.example.pj_projekt.data
 
-class Location(private var name:String, private var coordLat: Double, private var coordLong: Double){
+class Location(private var index: Int, private var name:String, private var coordLat: Double, private var coordLong: Double){
 
     private var isSelected = false
 
@@ -8,8 +8,12 @@ class Location(private var name:String, private var coordLat: Double, private va
         return "$name: $coordLat, $coordLong"
     }
 
+    fun setIndex(i: Int){
+        index = i
+    }
+
     fun setName(s: String){
-        name = s;
+        name = s
     }
 
     fun setCoordLat(lat: Double){
@@ -18,6 +22,10 @@ class Location(private var name:String, private var coordLat: Double, private va
 
     fun setCoordLong(long: Double){
         coordLong = long
+    }
+
+    fun getIndex(): Int {
+        return index
     }
 
     fun getName(): String {

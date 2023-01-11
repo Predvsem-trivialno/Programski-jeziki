@@ -3,6 +3,7 @@ package com.example.pj_projekt
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pj_projekt.data.Location
 import com.example.pj_projekt.databinding.ActivityTspselectBinding
@@ -17,6 +18,8 @@ class TSPSelectActivity : BaseActivity() {
         setContentView(binding.root)
 
         binding.btnStartTsp.setOnClickListener{
+            // tukaj pripravi distance/time matrix, da ga pošlješ v TSP (najlazje prek app.nekaSpremenljivka)
+            Toast.makeText(applicationContext, binding.distanceTypeSpinner.selectedItem.toString(), Toast.LENGTH_LONG).show()
             showTSP()
         }
 
@@ -34,10 +37,11 @@ class TSPSelectActivity : BaseActivity() {
     }
 
     private fun fillLocations(){
-        app.locations.add(Location("Koroski most",46.563158, 15.627748))
-        app.locations.add(Location("FERI",46.558952, 15.638226))
-        app.locations.add(Location("Glavni trg",46.557674, 15.645588))
-        app.locations.add(Location("AP MARIBOR",46.559386, 15.655580))
-        app.locations.add(Location("Europark",46.554076, 15.652252))
+        // Po vrsti jih moraš vnašat v locations, tak se potem izrišejo na mapi (SAMO TISTI KI JIH SELECTAŠ POL).
+        app.locations.add(Location(0,"Koroski most",46.563158, 15.627748))
+        app.locations.add(Location(1,"FERI",46.558952, 15.638226))
+        app.locations.add(Location(2,"Glavni trg",46.557674, 15.645588))
+        app.locations.add(Location(3,"AP MARIBOR",46.559386, 15.655580))
+        app.locations.add(Location(3,"Europark",46.554076, 15.652252))
     }
 }

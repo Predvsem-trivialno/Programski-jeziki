@@ -1,5 +1,6 @@
 package com.example.pj_projekt
 
+import android.graphics.Color
 import android.location.Location
 import android.os.Bundle
 import com.example.pj_projekt.databinding.ActivityTspBinding
@@ -8,18 +9,20 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.Polyline
+import com.google.android.gms.maps.model.PolylineOptions
 import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.net.PlacesClient
+
 
 class TSPActivity : BaseActivity(), OnMapReadyCallback {
     private lateinit var binding: ActivityTspBinding
-    private var selectedLocation: Marker? = null;
     private var map: GoogleMap? = null
-    private lateinit var placesClient: PlacesClient
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private var lastKnownLocation: Location? = null
+    private var markers: ArrayList<LatLng> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,8 +31,9 @@ class TSPActivity : BaseActivity(), OnMapReadyCallback {
         TSP()
 
         Places.initialize(this, BuildConfig.MAPS_API_KEY)
-        placesClient = Places.createClient(this)
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.map_fragment) as SupportMapFragment?
+        mapFragment?.getMapAsync(this)
     }
 
     private fun TSP(){
@@ -46,17 +50,41 @@ class TSPActivity : BaseActivity(), OnMapReadyCallback {
 
     override fun onMapReady(map: GoogleMap) {
         this.map = map
-        map.setOnMapClickListener { latLng -> // Creating a marker
-            val markerOptions = MarkerOptions()
-            markerOptions.position(latLng)
-            markerOptions.title(latLng.latitude.toString() + " : " + latLng.longitude)
-            map.clear()
-            map.animateCamera(CameraUpdateFactory.newLatLng(latLng))
-            selectedLocation = map.addMarker(markerOptions)
+        map.clear()
+        markers.clear()
+        generateMarkers()
+        generatePaths()
+    }
+
+    private fun generateMarkers(){
+        var first = true
+        for(location: com.example.pj_projekt.data.Location in app.locations){
+            if(location.isSelected()){
+                val position = LatLng(location.getCoordLat(), location.getCoordLong())
+                if(first){
+                    map?.animateCamera(CameraUpdateFactory.newLatLngZoom(position, DEFAULT_ZOOM))
+                    first = false
+                }
+                val markerOptions = MarkerOptions()
+                markerOptions.position(position)
+                markerOptions.title(location.getIndex().toString() + " " + location.getName())
+                map?.addMarker(markerOptions)
+                markers.add(position)
+            }
         }
     }
 
+    private fun generatePaths(){
+        map?.addPolyline(PolylineOptions()
+            .addAll(markers)
+            .color(Color.BLACK)
+            .width(10.0F)
+        )
+    }
+
+
     companion object {
+        private const val DEFAULT_ZOOM = 13F
         private const val KEY_CAMERA_POSITION = "camera_position"
         private const val KEY_LOCATION = "location"
     }

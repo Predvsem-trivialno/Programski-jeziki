@@ -16,6 +16,18 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <Spinner
+        android:id="@+id/distanceTypeSpinner"
+        android:layout_width="164dp"
+        android:layout_height="45dp"
+        android:layout_marginBottom="16dp"
+        android:dropDownSelector="@drawable/ic_launcher_foreground"
+        android:entries="@array/distanceType"
+        app:layout_constraintBottom_toTopOf="@+id/btnStartTsp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/locationRecycler"
         android:layout_width="329dp"
@@ -24,4 +36,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

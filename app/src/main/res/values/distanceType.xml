@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="distanceType">
+        <item>Time</item>
+        <item>Distance</item>
+    </string-array>
+</resources>
