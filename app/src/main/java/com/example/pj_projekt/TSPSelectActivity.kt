@@ -21,7 +21,8 @@ class TSPSelectActivity : BaseActivity() {
             showTSP()
         }
 
-        locations.add(Location("Maribor",10.0,10.0))
+        fillLocations()
+
         binding.locationRecycler.layoutManager = LinearLayoutManager(applicationContext)
         val adapter = LocationAdapter(locations, object: LocationAdapter.MyOnClick{
             @SuppressLint("NotifyDataSetChanged")
@@ -31,5 +32,13 @@ class TSPSelectActivity : BaseActivity() {
             }
         })
         binding.locationRecycler.adapter = adapter
+    }
+
+    private fun fillLocations(){
+        locations.add(Location("Koroski most",46.563158, 15.627748))
+        locations.add(Location("FERI",46.558952, 15.638226))
+        locations.add(Location("Glavni trg",46.557674, 15.645588))
+        locations.add(Location("AP MARIBOR",46.559386, 15.655580))
+        locations.add(Location("Europark",46.554076, 15.652252))
     }
 }
