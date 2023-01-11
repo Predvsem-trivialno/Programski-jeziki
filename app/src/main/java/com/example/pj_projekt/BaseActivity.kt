@@ -31,6 +31,11 @@ open class BaseActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    fun showSelectTSP() {
+        val intent = Intent(this, TSPSelectActivity::class.java)
+        startActivity(intent)
+    }
+
     fun showTSP() {
         val intent = Intent(this, TSPActivity::class.java)
         startActivity(intent)

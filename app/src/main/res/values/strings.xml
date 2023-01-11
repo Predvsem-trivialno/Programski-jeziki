@@ -20,4 +20,5 @@
     <string name="button_viewlogs">Open history</string>
     <string name="button_logout">Log out</string>
     <string name="button_tsp">TSP</string>
+    <string name="button_tspStart">Start</string>
 </resources>

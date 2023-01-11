@@ -56,7 +56,7 @@ class OpenActivity : BaseActivity() {
             showLogs()
         }
         binding.btnTsp.setOnClickListener{
-            showTSP()
+            showSelectTSP()
         }
         binding.btnLogout.setOnClickListener{
             app.sharedPrefSet("username","")
