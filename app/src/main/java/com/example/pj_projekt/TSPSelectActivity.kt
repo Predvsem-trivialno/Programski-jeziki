@@ -10,7 +10,6 @@ import com.example.pj_projekt.databinding.ActivityTspselectBinding
 class TSPSelectActivity : BaseActivity() {
 
     private lateinit var binding: ActivityTspselectBinding
-    private val locations: ArrayList<Location> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,10 +23,10 @@ class TSPSelectActivity : BaseActivity() {
         fillLocations()
 
         binding.locationRecycler.layoutManager = LinearLayoutManager(applicationContext)
-        val adapter = LocationAdapter(locations, object: LocationAdapter.MyOnClick{
+        val adapter = LocationAdapter(app.locations, object: LocationAdapter.MyOnClick{
             @SuppressLint("NotifyDataSetChanged")
             override fun onClick(p0: View?, position: Int) {
-                locations[position].select(!locations[position].isSelected())
+                app.locations[position].select(!app.locations[position].isSelected())
                 binding.locationRecycler.adapter?.notifyDataSetChanged()
             }
         })
@@ -35,10 +34,10 @@ class TSPSelectActivity : BaseActivity() {
     }
 
     private fun fillLocations(){
-        locations.add(Location("Koroski most",46.563158, 15.627748))
-        locations.add(Location("FERI",46.558952, 15.638226))
-        locations.add(Location("Glavni trg",46.557674, 15.645588))
-        locations.add(Location("AP MARIBOR",46.559386, 15.655580))
-        locations.add(Location("Europark",46.554076, 15.652252))
+        app.locations.add(Location("Koroski most",46.563158, 15.627748))
+        app.locations.add(Location("FERI",46.558952, 15.638226))
+        app.locations.add(Location("Glavni trg",46.557674, 15.645588))
+        app.locations.add(Location("AP MARIBOR",46.559386, 15.655580))
+        app.locations.add(Location("Europark",46.554076, 15.652252))
     }
 }

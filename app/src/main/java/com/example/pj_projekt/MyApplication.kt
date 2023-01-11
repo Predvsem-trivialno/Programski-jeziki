@@ -2,10 +2,12 @@ package com.example.pj_projekt
 
 import android.app.Application
 import android.content.Context
+import com.example.pj_projekt.data.Location
 
 const val SP_FILE = "sharedpref.data"
 
 class MyApplication: Application() {
+    val locations: ArrayList<Location> = arrayListOf()
     var username: String = ""
     var email: String = ""
     var userId: String = ""
