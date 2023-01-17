@@ -44,6 +44,8 @@ class LocationAdapter (private val data: ArrayList<Location>, private val onClic
 
         if(!itemsViewModel.isSelected()){
             holder.line.setCardBackgroundColor(Color.WHITE)
+        } else {
+            holder.line.setCardBackgroundColor(Color.YELLOW)
         }
         holder.line.setOnClickListener { p0 ->
             holder.line.setCardBackgroundColor(Color.YELLOW)

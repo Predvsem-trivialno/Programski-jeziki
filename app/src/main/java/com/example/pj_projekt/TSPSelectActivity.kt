@@ -32,6 +32,7 @@ class TSPSelectActivity : BaseActivity() {
         val adapter = LocationAdapter(app.locations, object: LocationAdapter.MyOnClick{
             @SuppressLint("NotifyDataSetChanged")
             override fun onClick(p0: View?, position: Int) {
+                Log.i("onClick","HI!")
                 app.locations[position].select(!app.locations[position].isSelected())
                 binding.locationRecycler.adapter?.notifyDataSetChanged()
             }
@@ -57,6 +58,7 @@ class TSPSelectActivity : BaseActivity() {
             Log.i("line", line)
             val splitLine = line.split("~").toTypedArray()
             app.locations.add(Location(num,splitLine[0],splitLine[1],splitLine[2],splitLine[3].toInt(),java.lang.Double.valueOf(splitLine[4]),java.lang.Double.valueOf(splitLine[5])))
+            app.locations[app.locations.size-1].select(false)
         }
     }
 }
