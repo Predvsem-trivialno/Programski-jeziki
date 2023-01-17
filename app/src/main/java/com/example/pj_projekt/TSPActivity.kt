@@ -5,7 +5,6 @@ import android.location.Location
 import android.os.Bundle
 import com.example.pj_projekt.data.GA
 import com.example.pj_projekt.data.TSP
-import com.example.pj_projekt.data.TSP.Tour
 import com.example.pj_projekt.databinding.ActivityTspBinding
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -25,6 +24,7 @@ class TSPActivity : BaseActivity(), OnMapReadyCallback {
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private var lastKnownLocation: Location? = null
     private var markers: ArrayList<LatLng> = arrayListOf()
+    private var selectedLocations: ArrayList<com.example.pj_projekt.data.Location> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,9 +39,23 @@ class TSPActivity : BaseActivity(), OnMapReadyCallback {
     }
 
     private fun TSP(){
-        val tsp = TSP(app.locations, app.distanceType, 100000)
+        prepareSelectedLocations()
+        val tsp = TSP(selectedLocations, app.distanceType, 100000)
         val ga = GA(100, 0.8, 0.1)
         //val bestPath: Tour = ga.execute(tsp)
+    }
+
+    private fun prepareSelectedLocations(){
+        selectedLocations.clear()
+        var i=0
+        val locations: ArrayList<com.example.pj_projekt.data.Location> = app.locations.clone() as ArrayList<com.example.pj_projekt.data.Location>
+        for(l: com.example.pj_projekt.data.Location in locations){
+            if(l.isSelected()) {
+                l.setIndex(i)
+                selectedLocations.add(l)
+                i++
+            }
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -62,19 +76,17 @@ class TSPActivity : BaseActivity(), OnMapReadyCallback {
 
     private fun generateMarkers(){
         var first = true
-        for(location: com.example.pj_projekt.data.Location in app.locations){
-            if(location.isSelected()){
-                val position = LatLng(location.getCoordLat(), location.getCoordLong())
-                if(first){
-                    map?.animateCamera(CameraUpdateFactory.newLatLngZoom(position, DEFAULT_ZOOM))
-                    first = false
-                }
-                val markerOptions = MarkerOptions()
-                markerOptions.position(position)
-                markerOptions.title(location.getAddress() + " (" + location.getNumOfBoxes() + ")")
-                map?.addMarker(markerOptions)
-                markers.add(position)
+        for(location: com.example.pj_projekt.data.Location in selectedLocations){
+            val position = LatLng(location.getCoordLat(), location.getCoordLong())
+            if(first){
+                map?.animateCamera(CameraUpdateFactory.newLatLngZoom(position, DEFAULT_ZOOM))
+                first = false
             }
+            val markerOptions = MarkerOptions()
+            markerOptions.position(position)
+            markerOptions.title(location.getAddress() + " (št. paketnikov: " + location.getNumOfBoxes() + ")")
+            map?.addMarker(markerOptions)
+            markers.add(position)
         }
     }
 
