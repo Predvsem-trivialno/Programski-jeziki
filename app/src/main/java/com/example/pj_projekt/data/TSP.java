@@ -3,6 +3,10 @@ package com.example.pj_projekt.data;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,6 +20,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 public class TSP {
 
@@ -130,6 +135,7 @@ public class TSP {
     }
 
     private void loadAPIData(ArrayList<Location> locations) {
+        distanceType = DistanceType.WEIGHTED;
         String API_KEY = "5b3ce3597851110001cf62486a80c5511bc44de08bf4cbf48cfe28cd";
         ArrayList<ArrayList<Double>> coordinatePairs = new ArrayList<>();
         numberOfCities = locations.size();
@@ -156,8 +162,8 @@ public class TSP {
         OkHttpClient client = new OkHttpClient();
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         RequestBody formBody = RequestBody.create(jsonString, JSON);
-        Log.i("JSON STRING", jsonString);
 
+        final MatrixResponse[] matrixResponse = new MatrixResponse[1];
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -172,7 +178,7 @@ public class TSP {
                 try {
                     Response response = client.newCall(request).execute();
                     Log.i("MATRIX RESPONSE CODE", String.valueOf(response.code()));
-                    Log.i("MATRIX", response.body().string());
+                    matrixResponse[0] = gson.fromJson(response.body().string(), MatrixResponse.class);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -183,6 +189,16 @@ public class TSP {
             t.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+
+        MatrixResponse response = matrixResponse[0];
+        Log.i("TEST", response.getDurations().get(0).toString());
+
+        weights = new double[response.getDurations().size()][response.getDurations().size()];
+        for(int i = 0; i < response.getDurations().size(); i++) {
+            for(int j = 0; j < response.getDurations().get(i).size(); j++) {
+                weights[i][j] = response.getDurations().get(i).get(j);
+            }
         }
     }
 
