@@ -3,6 +3,7 @@ package com.example.pj_projekt
 import android.graphics.Color
 import android.location.Location
 import android.os.Bundle
+import com.example.pj_projekt.data.TSP
 import com.example.pj_projekt.databinding.ActivityTspBinding
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -12,7 +13,6 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.maps.model.Polyline
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.android.libraries.places.api.Places
 
@@ -37,7 +37,7 @@ class TSPActivity : BaseActivity(), OnMapReadyCallback {
     }
 
     private fun TSP(){
-        // execute TSP here
+        val tsp = TSP(app.locations,100000)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -67,7 +67,7 @@ class TSPActivity : BaseActivity(), OnMapReadyCallback {
                 }
                 val markerOptions = MarkerOptions()
                 markerOptions.position(position)
-                markerOptions.title(location.getIndex().toString() + " " + location.getName())
+                markerOptions.title(location.getIndex().toString() + " " + location.getNumOfBoxes())
                 map?.addMarker(markerOptions)
                 markers.add(position)
             }

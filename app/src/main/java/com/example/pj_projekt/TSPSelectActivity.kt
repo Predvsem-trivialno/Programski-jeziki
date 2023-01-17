@@ -2,11 +2,14 @@ package com.example.pj_projekt
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pj_projekt.data.Location
 import com.example.pj_projekt.databinding.ActivityTspselectBinding
+import java.io.BufferedReader
+import java.io.InputStreamReader
 
 class TSPSelectActivity : BaseActivity() {
 
@@ -37,11 +40,23 @@ class TSPSelectActivity : BaseActivity() {
     }
 
     private fun fillLocations(){
-        // Po vrsti jih moraš vnašat v locations, tak se potem izrišejo na mapi (SAMO TISTI KI JIH SELECTAŠ POL).
-        app.locations.add(Location(0,"Koroski most",46.563158, 15.627748))
-        app.locations.add(Location(1,"FERI",46.558952, 15.638226))
-        app.locations.add(Location(2,"Glavni trg",46.557674, 15.645588))
-        app.locations.add(Location(3,"AP MARIBOR",46.559386, 15.655580))
-        app.locations.add(Location(3,"Europark",46.554076, 15.652252))
+        val file = resources.openRawResource(R.raw.locations)
+        val lines: MutableList<String> = ArrayList()
+        try {
+            BufferedReader(InputStreamReader(file)).use { br ->
+                var line = br.readLine()
+                while (line != null) {
+                    lines.add(line)
+                    line = br.readLine()
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        for ((num, line) in lines.withIndex()) {
+            Log.i("line", line)
+            val splitLine = line.split("~").toTypedArray()
+            app.locations.add(Location(num,splitLine[0],splitLine[1],splitLine[2],splitLine[3].toInt(),java.lang.Double.valueOf(splitLine[4]),java.lang.Double.valueOf(splitLine[5])))
+        }
     }
 }

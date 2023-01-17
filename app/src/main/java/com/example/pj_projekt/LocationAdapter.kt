@@ -26,7 +26,7 @@ class LocationAdapter (private val data: ArrayList<Location>, private val onClic
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val name: TextView = itemView.findViewById(R.id.locationTitle)!!
-        val coords: TextView = itemView.findViewById(R.id.locationCoordinates)!!
+        val amount: TextView = itemView.findViewById(R.id.locationAmount)!!
         val line: CardView = itemView.findViewById(R.id.cvLocation)!!
     }
 
@@ -39,8 +39,8 @@ class LocationAdapter (private val data: ArrayList<Location>, private val onClic
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val itemsViewModel = data[position]
         val model = data[position]
-        holder.name.text = model.getName()
-        holder.coords.text = model.getCoordLat().toString() + ", " + model.getCoordLong().toString()
+        holder.name.text = model.toString()
+        holder.amount.text = model.getNumOfBoxes().toString()
 
         if(!itemsViewModel.isSelected()){
             holder.line.setCardBackgroundColor(Color.WHITE)
