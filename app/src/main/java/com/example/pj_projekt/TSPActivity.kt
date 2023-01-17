@@ -3,7 +3,9 @@ package com.example.pj_projekt
 import android.graphics.Color
 import android.location.Location
 import android.os.Bundle
+import com.example.pj_projekt.data.GA
 import com.example.pj_projekt.data.TSP
+import com.example.pj_projekt.data.TSP.Tour
 import com.example.pj_projekt.databinding.ActivityTspBinding
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -38,6 +40,8 @@ class TSPActivity : BaseActivity(), OnMapReadyCallback {
 
     private fun TSP(){
         val tsp = TSP(app.locations, app.distanceType, 100000)
+        val ga = GA(100, 0.8, 0.1)
+        //val bestPath: Tour = ga.execute(tsp)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -67,7 +71,7 @@ class TSPActivity : BaseActivity(), OnMapReadyCallback {
                 }
                 val markerOptions = MarkerOptions()
                 markerOptions.position(position)
-                markerOptions.title(location.getIndex().toString() + " " + location.getNumOfBoxes())
+                markerOptions.title(location.getAddress() + " (" + location.getNumOfBoxes() + ")")
                 map?.addMarker(markerOptions)
                 markers.add(position)
             }
