@@ -8,6 +8,7 @@ const val SP_FILE = "sharedpref.data"
 
 class MyApplication: Application() {
     val locations: ArrayList<Location> = arrayListOf()
+    var distanceType: String = ""
     var username: String = ""
     var email: String = ""
     var userId: String = ""

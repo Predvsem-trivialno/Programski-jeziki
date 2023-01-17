@@ -21,8 +21,8 @@ class TSPSelectActivity : BaseActivity() {
         setContentView(binding.root)
 
         binding.btnStartTsp.setOnClickListener{
-            // tukaj pripravi distance/time matrix, da ga pošlješ v TSP (najlazje prek app.nekaSpremenljivka)
             Toast.makeText(applicationContext, binding.distanceTypeSpinner.selectedItem.toString(), Toast.LENGTH_LONG).show()
+            app.distanceType = binding.distanceTypeSpinner.selectedItem.toString()
             showTSP()
         }
 
@@ -32,7 +32,6 @@ class TSPSelectActivity : BaseActivity() {
         val adapter = LocationAdapter(app.locations, object: LocationAdapter.MyOnClick{
             @SuppressLint("NotifyDataSetChanged")
             override fun onClick(p0: View?, position: Int) {
-                Log.i("onClick","HI!")
                 app.locations[position].select(!app.locations[position].isSelected())
                 binding.locationRecycler.adapter?.notifyDataSetChanged()
             }

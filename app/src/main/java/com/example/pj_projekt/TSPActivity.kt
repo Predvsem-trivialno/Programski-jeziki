@@ -37,7 +37,7 @@ class TSPActivity : BaseActivity(), OnMapReadyCallback {
     }
 
     private fun TSP(){
-        val tsp = TSP(app.locations,100000)
+        val tsp = TSP(app.locations, app.distanceType, 100000)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

@@ -68,13 +68,18 @@ public class TSP {
     int numberOfCities;
     double[][] weights;
     DistanceType distanceType = DistanceType.EUCLIDEAN;
-    DataType dataType = DataType.DISTANCE;
+    DataType dataType;
     int numberOfEvaluations, maxEvaluations;
 
 
-    public TSP(ArrayList<Location> locations, int maxEvaluations) {
+    public TSP(ArrayList<Location> locations, String dataType, int maxEvaluations) {
+        if(dataType.equals("Time")) this.dataType = DataType.TIME;
+        else this.dataType = DataType.DISTANCE;
+
         numberOfEvaluations = 0;
         this.maxEvaluations = maxEvaluations;
+
+        loadAPIData(locations);
     }
 
     public void evaluate(Tour tour) {
@@ -116,52 +121,8 @@ public class TSP {
         return randomTour;
     }
 
-    private void loadAPIData(InputStream file) {
-        String API_KEY = "5b3ce3597851110001cf62486a80c5511bc44de08bf4cbf48cfe28cd";
-        List<String> ZIPCodesData = new ArrayList<>();
-        List<String> citiesData = new ArrayList<>();
-        List<String> addressData = new ArrayList<>();
-        List<String> amountData = new ArrayList<>();
-        List<Double> latitudeData = new ArrayList<>();
-        List<Double> longitudeData = new ArrayList<>();
-        if(file == null) {
-            System.err.println("File not found!");
-            return;
-        }
-
-        List<String> lines = new ArrayList<>();
-        try(BufferedReader br = new BufferedReader(new InputStreamReader(file))) {
-
-            String line = br.readLine();
-            while (line != null) {
-                lines.add(line);
-                line = br.readLine();
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        int cityIndex = 0;
-        for(String line : lines) {
-            Log.i("line",line);
-            String[] splitLine = line.split("~");
-            ZIPCodesData.add(splitLine[0]);
-            citiesData.add(splitLine[1].replaceAll(" ", "%20"));
-            addressData.add(splitLine[2].replaceAll(" ", "%20"));
-            amountData.add(splitLine[3]);
-            latitudeData.add(Double.valueOf(splitLine[4]));
-            longitudeData.add(Double.valueOf(splitLine[5]));
-            City newCity = new City();
-            newCity.index = cityIndex;
-            newCity.x = latitudeData.get(cityIndex);
-            newCity.y = longitudeData.get(cityIndex);
-            cities.add(newCity);
-            if(cityIndex == 0) {
-                start = newCity;
-            }
-            cityIndex++;
-        }
-        numberOfCities = ZIPCodesData.size();
+    private void loadAPIData(ArrayList<Location> locations) {
+        numberOfCities = locations.size();
     }
 
     private void loadFile(String path) {
