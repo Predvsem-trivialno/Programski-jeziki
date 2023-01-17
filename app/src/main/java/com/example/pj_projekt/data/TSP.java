@@ -2,6 +2,8 @@ package com.example.pj_projekt.data;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -136,6 +138,11 @@ public class TSP {
             coordinatePair.add(locations.get(i).getCoordLat());
             coordinatePairs.add(coordinatePair);
         }
+
+        Gson gson = new Gson();
+        MatrixCall matrixCall = new MatrixCall(dataType.toString(), coordinatePairs);
+        String jsonString = gson.toJson(matrixCall);
+        Log.println(Log.INFO, "TAG", jsonString);
     }
 
     private void loadFile(String path) {
