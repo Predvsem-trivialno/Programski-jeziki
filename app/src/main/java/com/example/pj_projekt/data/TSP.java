@@ -71,7 +71,6 @@ public class TSP {
     DataType dataType;
     int numberOfEvaluations, maxEvaluations;
 
-
     public TSP(ArrayList<Location> locations, String dataType, int maxEvaluations) {
         if(dataType.equals("Time")) this.dataType = DataType.TIME;
         else this.dataType = DataType.DISTANCE;
@@ -122,7 +121,21 @@ public class TSP {
     }
 
     private void loadAPIData(ArrayList<Location> locations) {
+        ArrayList<ArrayList<Double>> coordinatePairs = new ArrayList<>();
         numberOfCities = locations.size();
+        for (int i = 0; i < numberOfCities; i++) {
+            City newCity = new City();
+            newCity.index = locations.get(i).getIndex();
+            newCity.x = locations.get(i).getCoordLat();
+            newCity.y = locations.get(i).getCoordLong();
+            cities.add(newCity);
+            if (i == 0) start = newCity;
+
+            ArrayList<Double> coordinatePair = new ArrayList<>();
+            coordinatePair.add(locations.get(i).getCoordLong());
+            coordinatePair.add(locations.get(i).getCoordLat());
+            coordinatePairs.add(coordinatePair);
+        }
     }
 
     private void loadFile(String path) {
@@ -256,3 +269,25 @@ public class TSP {
         return numberOfEvaluations;
     }
 }
+
+ // Tako bi potekalo pridobivanje koordinat za posamezna mesta s pomočjo API klicev
+        /*for(int i = 0; i < numberOfCities; i++) {
+            Response response = client.target("https://api.openrouteservice.org/geocode/search?api_key=" + API_KEY + "&text=" + ZIPCodesData.get(i) + "%20" + citiesData.get(i) + "%20" + addressData.get(i) + "&boundary.country=SI")
+                    .request(MediaType.TEXT_PLAIN_TYPE)
+                    .header("Accept", "application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8")
+                    .get();
+
+            String responseBody = response.readEntity(String.class);
+
+            try {
+                JSONObject responseObject = (JSONObject) parser.parse(responseBody);
+                JSONArray innerObject = (JSONArray) responseObject.get("features");
+                JSONObject geometryObject = (JSONObject) innerObject.get(0);
+                JSONObject geometryInnerObject = (JSONObject) geometryObject.get("geometry");
+                List<Double> coordinates = (List<Double>) geometryInnerObject.get("coordinates");
+                longitudeData.add(coordinates.get(0));
+                latitudeData.add(coordinates.get(1));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }*/
