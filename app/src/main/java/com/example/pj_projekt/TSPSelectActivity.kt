@@ -21,9 +21,16 @@ class TSPSelectActivity : BaseActivity() {
         setContentView(binding.root)
 
         binding.btnStartTsp.setOnClickListener{
-            Toast.makeText(applicationContext, binding.distanceTypeSpinner.selectedItem.toString(), Toast.LENGTH_LONG).show()
-            app.distanceType = binding.distanceTypeSpinner.selectedItem.toString()
-            showTSP()
+            var counter = 0
+            for(l: Location in app.locations){
+                if(l.isSelected()) counter++;
+            }
+            if(counter>50){
+                Toast.makeText(applicationContext,"You selected $counter / 50 locations. Please deselect some locations.", Toast.LENGTH_LONG).show()
+            } else {
+                app.distanceType = binding.distanceTypeSpinner.selectedItem.toString()
+                showTSP()
+            }
         }
 
         fillLocations()
