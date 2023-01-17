@@ -76,15 +76,18 @@ class TSPActivity : BaseActivity(), OnMapReadyCallback {
     }
 
     private fun generateMarkers(){
-        var first = true
         var counter = 1
         for(city: TSP.City in bestTour.path){
             val position = LatLng(selectedLocations[city.index].getCoordLat(), selectedLocations[city.index].getCoordLong())
-            if(first){
-                map?.animateCamera(CameraUpdateFactory.newLatLngZoom(position, DEFAULT_ZOOM))
-                first = false
-            }
             val markerOptions = MarkerOptions()
+            if(counter == 1){
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                map?.animateCamera(CameraUpdateFactory.newLatLngZoom(position, DEFAULT_ZOOM))
+            } else if(counter == bestTour.path.size) {
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+            } else {
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
+            }
             markerOptions.position(position)
             markerOptions.title(counter.toString() + ": " + selectedLocations[city.index].getAddress() + " (št. paketnikov: " + selectedLocations[city.index].getNumOfBoxes() + ")")
             map?.addMarker(markerOptions)
@@ -103,7 +106,7 @@ class TSPActivity : BaseActivity(), OnMapReadyCallback {
             .add(markers[0])
             .add(markers[markers.size-1])
             .color(Color.RED)
-            .width(7.0F)
+            .width(6.0F)
         )
         /*
         Ta koda bi morala izrisovati puščice v smeri črte, ampak zaradi nekega razloga ne naredi nič.

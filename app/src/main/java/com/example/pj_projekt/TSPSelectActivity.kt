@@ -27,6 +27,8 @@ class TSPSelectActivity : BaseActivity() {
             }
             if(counter>50){
                 Toast.makeText(applicationContext,"You selected $counter / 50 locations. Please deselect some locations.", Toast.LENGTH_LONG).show()
+            } else if(counter<2){
+                Toast.makeText(applicationContext,"You selected only $counter location(s). The solution is trivial. Please select more locations.", Toast.LENGTH_LONG).show()
             } else {
                 app.distanceType = binding.distanceTypeSpinner.selectedItem.toString()
                 showTSP()
