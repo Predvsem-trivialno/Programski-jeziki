@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 class MatrixCall {
     private ArrayList<ArrayList<Double>> locations;
-    private String metrics;
+    private ArrayList<String> metrics;
     private final String units = "km";
 
-    public MatrixCall(String metrics, ArrayList<ArrayList<Double>>locations) {
+    public MatrixCall(ArrayList<String> metrics, ArrayList<ArrayList<Double>>locations) {
         this.metrics = metrics;
         this.locations = locations;
     }

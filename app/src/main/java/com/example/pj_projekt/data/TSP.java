@@ -5,15 +5,22 @@ import android.util.Log;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 public class TSP {
 
     enum DistanceType { EUCLIDEAN, WEIGHTED }
-    enum DataType { TIME, DISTANCE }
+    enum DataType { duration, distance }
 
     public class City {
         public int index;
@@ -74,8 +81,8 @@ public class TSP {
     int numberOfEvaluations, maxEvaluations;
 
     public TSP(ArrayList<Location> locations, String dataType, int maxEvaluations) {
-        if(dataType.equals("Time")) this.dataType = DataType.TIME;
-        else this.dataType = DataType.DISTANCE;
+        if(dataType.equals("Time")) this.dataType = DataType.duration;
+        else this.dataType = DataType.distance;
 
         numberOfEvaluations = 0;
         this.maxEvaluations = maxEvaluations;
@@ -123,6 +130,7 @@ public class TSP {
     }
 
     private void loadAPIData(ArrayList<Location> locations) {
+        String API_KEY = "5b3ce3597851110001cf62486a80c5511bc44de08bf4cbf48cfe28cd";
         ArrayList<ArrayList<Double>> coordinatePairs = new ArrayList<>();
         numberOfCities = locations.size();
         for (int i = 0; i < numberOfCities; i++) {
@@ -140,9 +148,42 @@ public class TSP {
         }
 
         Gson gson = new Gson();
-        MatrixCall matrixCall = new MatrixCall(dataType.toString(), coordinatePairs);
+        ArrayList<String> metric = new ArrayList<>();
+        metric.add(dataType.toString());
+        MatrixCall matrixCall = new MatrixCall(metric, coordinatePairs);
         String jsonString = gson.toJson(matrixCall);
-        Log.println(Log.INFO, "TAG", jsonString);
+
+        OkHttpClient client = new OkHttpClient();
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+        RequestBody formBody = RequestBody.create(jsonString, JSON);
+        Log.i("JSON STRING", jsonString);
+
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Request request = new Request.Builder()
+                        .url("https://api.openrouteservice.org/v2/matrix/driving-car")
+                        .header("Authorization", API_KEY)
+                        .header("Accept", "application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8")
+                        .header("Content-Type", "application/json; charset=utf-8")
+                        .post(formBody)
+                        .build();
+
+                try {
+                    Response response = client.newCall(request).execute();
+                    Log.i("MATRIX RESPONSE CODE", String.valueOf(response.code()));
+                    Log.i("MATRIX", response.body().string());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }});
+
+        t.start();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private void loadFile(String path) {
