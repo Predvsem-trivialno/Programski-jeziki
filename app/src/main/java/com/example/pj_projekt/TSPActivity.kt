@@ -12,10 +12,9 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.maps.model.PolylineOptions
+import com.google.android.gms.maps.model.*
 import com.google.android.libraries.places.api.Places
+import org.w3c.dom.Text
 
 
 class TSPActivity : BaseActivity(), OnMapReadyCallback {
@@ -25,11 +24,14 @@ class TSPActivity : BaseActivity(), OnMapReadyCallback {
     private var lastKnownLocation: Location? = null
     private var markers: ArrayList<LatLng> = arrayListOf()
     private var selectedLocations: ArrayList<com.example.pj_projekt.data.Location> = arrayListOf()
+    private lateinit var bestTour: TSP.Tour
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTspBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        prepareSelectedLocations()
         TSP()
 
         Places.initialize(this, BuildConfig.MAPS_API_KEY)
@@ -39,10 +41,9 @@ class TSPActivity : BaseActivity(), OnMapReadyCallback {
     }
 
     private fun TSP(){
-        prepareSelectedLocations()
         val tsp = TSP(selectedLocations, app.distanceType, 100000)
         val ga = GA(100, 0.8, 0.1)
-        //val bestPath: Tour = ga.execute(tsp)
+        bestTour = ga.execute(tsp)
     }
 
     private fun prepareSelectedLocations(){
@@ -76,17 +77,19 @@ class TSPActivity : BaseActivity(), OnMapReadyCallback {
 
     private fun generateMarkers(){
         var first = true
-        for(location: com.example.pj_projekt.data.Location in selectedLocations){
-            val position = LatLng(location.getCoordLat(), location.getCoordLong())
+        var counter = 1
+        for(city: TSP.City in bestTour.path){
+            val position = LatLng(selectedLocations[city.index].getCoordLat(), selectedLocations[city.index].getCoordLong())
             if(first){
                 map?.animateCamera(CameraUpdateFactory.newLatLngZoom(position, DEFAULT_ZOOM))
                 first = false
             }
             val markerOptions = MarkerOptions()
             markerOptions.position(position)
-            markerOptions.title(location.getAddress() + " (št. paketnikov: " + location.getNumOfBoxes() + ")")
+            markerOptions.title(counter.toString() + ": " + selectedLocations[city.index].getAddress() + " (št. paketnikov: " + selectedLocations[city.index].getNumOfBoxes() + ")")
             map?.addMarker(markerOptions)
             markers.add(position)
+            counter++
         }
     }
 
@@ -96,6 +99,22 @@ class TSPActivity : BaseActivity(), OnMapReadyCallback {
             .color(Color.BLACK)
             .width(10.0F)
         )
+        map?.addPolyline(PolylineOptions()
+            .add(markers[0])
+            .add(markers[markers.size-1])
+            .color(Color.RED)
+            .width(7.0F)
+        )
+        /*
+        Ta koda bi morala izrisovati puščice v smeri črte, ampak zaradi nekega razloga ne naredi nič.
+        vir: https://cloud.google.com/blog/products/maps-platform/announcing-advanced-polylines-maps-sdks-android
+        val style: StampStyle = TextureStyle.newBuilder(BitmapDescriptorFactory.fromResource(R.drawable.arrow)).build()
+        map?.addPolyline(PolylineOptions()
+            .addSpan(StyleSpan(StrokeStyle.colorBuilder(Color.BLACK).stamp(style).build()))
+            .addSpan(StyleSpan(StrokeStyle.colorBuilder(Color.BLUE).stamp(style).build()))
+            .addAll(markers)
+        )
+         */
     }
 
 
