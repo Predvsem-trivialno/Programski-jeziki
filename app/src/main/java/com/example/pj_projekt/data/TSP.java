@@ -155,7 +155,7 @@ public class TSP {
 
         Gson gson = new Gson();
         ArrayList<String> metric = new ArrayList<>();
-        metric.add(dataType.toString());
+        metric.add(DataType.duration.toString());
         MatrixCall matrixCall = new MatrixCall(metric, coordinatePairs);
         String jsonString = gson.toJson(matrixCall);
 

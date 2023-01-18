@@ -41,7 +41,7 @@ class TSPActivity : BaseActivity(), OnMapReadyCallback {
     }
 
     private fun TSP(){
-        val tsp = TSP(selectedLocations, app.distanceType, 100000)
+        val tsp = TSP(selectedLocations, app.distanceType, 1000000)
         val ga = GA(100, 0.8, 0.1)
         bestTour = ga.execute(tsp)
     }
